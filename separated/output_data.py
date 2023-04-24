@@ -35,3 +35,15 @@ def print_unique_modules_and_lectures(population):
     print(f"Total unique modules in the population: {len(unique_modules)}")
     print(f"Total unique lectures in the population: {len(unique_lectures)}")
 
+def visualize_assignments(lecture_assignments):
+    data = []
+
+    for lecture, assignment in lecture_assignments.items():
+        module, lecture_num = lecture.rsplit('_', 1)
+        room = assignment['room']
+        time = assignment['time']
+        data.append([module, lecture, lecture_num, room, time])
+
+    df = pd.DataFrame(data, columns=['Module', 'Lecture', 'Lecture_Num', 'Room', 'Time'])
+    df.sort_values(by=['Module', 'Lecture_Num'], inplace=True)
+    return df

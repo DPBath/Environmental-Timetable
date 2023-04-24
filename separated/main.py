@@ -79,24 +79,6 @@ postgrad_hours = ['WED14:15', 'WED15:15', 'WED16:15', 'WED17:15', 'WED16:15']
 
 
 
-
-
-
-def visualize_assignments(lecture_assignments):
-    data = []
-
-    for lecture, assignment in lecture_assignments.items():
-        module, lecture_num = lecture.rsplit('_', 1)
-        room = assignment['room']
-        time = assignment['time']
-        data.append([module, lecture, lecture_num, room, time])
-
-    df = pd.DataFrame(data, columns=['Module', 'Lecture', 'Lecture_Num', 'Room', 'Time'])
-    df.sort_values(by=['Module', 'Lecture_Num'], inplace=True)
-    return df
-
-
-
 ####### OUTPUT
 population = generate_population(students_per_faculty_year, faculty_names, num_courses_list, year_percentages, num_assigned_modules, num_total_modules, num_lectures_list)
 
