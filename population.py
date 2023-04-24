@@ -26,7 +26,7 @@ faculty_names = ['Eng', 'Hum', 'Man', 'Sci']
 room, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'A', 2, 164)
 capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'B', 2, 164)
 
-##### Normal
+############# Normal
 room, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'A', 2, 164)
 capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'B', 2, 164)
 
