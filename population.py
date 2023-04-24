@@ -99,6 +99,8 @@ def find_students_in_same_module(population, target_module):
 
     return students_in_module
 
+
+# Comment - Similar to above, like that its a dictionary, but collate this operation with the above one so you only have to loop through student in population once.
 def count_students_by_faculty(population, faculty_names):
     faculty_counts = {faculty: 0 for faculty in faculty_names}
 
