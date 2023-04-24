@@ -9,7 +9,7 @@ from collections import defaultdict
 from tabulate import tabulate
 from random import shuffle
 
-
+# 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
 print('hi')
 def read_excel_column_to_list(file_path, sheet_name, column, start_row, end_row):
     # Load the workbook and select the desired worksheet
@@ -26,7 +26,7 @@ faculty_names = ['Eng', 'Hum', 'Man', 'Sci']
 room, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'A', 2, 164)
 capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'B', 2, 164)
 
-############# Normal
+##### Normal
 room, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'A', 2, 164)
 capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'B', 2, 164)
 
