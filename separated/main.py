@@ -15,7 +15,7 @@ print('hi')
 faculty_names = ['Eng', 'Hum', 'Man', 'Sci']
 
 # 0 = Normal    1 = Fast    2 = Instant
-speed = 0
+speed = 2
 
 if speed == 0:
     ##### Normal

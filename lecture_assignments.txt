@@ -1,0 +1,16 @@
+Sci_C1_Y4_M1_L1: {'room': 'CB1.11', 'time': 'WED14:15'}
+Hum_C1_Y4_M1_L1: {'room': 'CB1.10', 'time': 'WED14:15'}
+Eng_C1_Y4_M1_L1: {'room': 'CB1.11', 'time': 'WED15:15'}
+Man_C1_Y4_M1_L1: {'room': 'CB2.6', 'time': 'WED14:15'}
+Hum_C1_Y3_M1_L1: {'room': 'CB1.11', 'time': 'MON10:15'}
+Sci_C1_Y3_M1_L1: {'room': 'CB1.10', 'time': 'MON10:15'}
+Eng_C1_Y3_M1_L1: {'room': 'CB2.6', 'time': 'MON10:15'}
+Man_C1_Y3_M1_L1: {'room': 'CB5.13', 'time': 'MON10:15'}
+Hum_C1_Y2_M1_L1: {'room': 'CB1.11', 'time': 'MON11:15'}
+Sci_C1_Y2_M1_L1: {'room': 'CB1.10', 'time': 'MON11:15'}
+Eng_C1_Y2_M1_L1: {'room': 'CB1.11', 'time': 'MON12:15'}
+Man_C1_Y2_M1_L1: {'room': 'CB1.12', 'time': 'MON10:15'}
+Hum_C1_Y1_M1_L1: {'room': 'CB1.10', 'time': 'MON12:15'}
+Sci_C1_Y1_M1_L1: {'room': 'CB1.11', 'time': 'MON13:15'}
+Eng_C1_Y1_M1_L1: {'room': 'CB1.10', 'time': 'MON13:15'}
+Man_C1_Y1_M1_L1: {'room': 'CB2.6', 'time': 'MON11:15'}

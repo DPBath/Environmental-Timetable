@@ -4,6 +4,7 @@ import sys
 import random
 import os
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 subfolder_path = os.path.join(script_dir, "calculateEmissionsRequirements")
@@ -12,14 +13,18 @@ fuelList = []
 co2List = []
 timeList = []
 
+#route = ['U1','U2','U2car','20','22','real','home','test']
+#initialTime = [33.08, 34.15, 20.87, 40.31, 58.16, 25.63, 130.5, 0.32] # 0.25 per stop
+#initialTime = [25.58, 25.9, 20.87, 31.56, 41.91, 25.63, 130.5, 0.32] # 0 per stop
+
 api_key = "AIzaSyBzPvM7fVj7GzozpAf6zEiHPBSJLl1Z8Ys"
 # Add extra stops to a journey using this
 additionalStops = 0
 timePerStop = 0.25
 
-# Python program to get average of a list
-def Average(lst):
-    return sum(lst) / len(lst)
+#targetTime = 38
+specificRoute = '20'
+initialTime = 25.58
 
 # Functions
 
@@ -260,59 +265,63 @@ coords_list = []
 #     sys.exit('Not a valid route')
 
 route = ['U1','U2','U2car','20','22','real','home','test']
-routeBusStops = [30 + additionalStops,33 + additionalStops,0 + additionalStops,35 + additionalStops,65 + additionalStops,0 + additionalStops,0 + additionalStops,0 + additionalStops]
+index = route.index(specificRoute)
 
-for routeNumber in range(len(route)):
-    # File Names
-    routeText = route[routeNumber] + '.txt'
-    routeSpeed = route[routeNumber] + 'Speed.txt'
-    routeDistance = route[routeNumber] + 'Distance.txt'
-    routeAltitude = route[routeNumber] + 'Altitude.txt'
+count = 0
 
-    # Read route coordinate file from the subfolder
-    file_path = os.path.join(subfolder_path, routeText)
-    with open(file_path, "r") as my_file:
-        data = my_file.read()
-    coords_list = data.split("\n")
+for targetTime in range(30,60):
+    while True:
+        routeBusStops = [30 + additionalStops,33 + additionalStops,0 + additionalStops,35 + additionalStops,65 + additionalStops,0 + additionalStops,0 + additionalStops,0 + additionalStops]
+
+        # File Names
+        routeText = specificRoute + '.txt'
+        routeSpeed = specificRoute + 'Speed.txt'
+        routeDistance = specificRoute + 'Distance.txt'
+        routeAltitude = specificRoute + 'Altitude.txt'
+
+        # Read route coordinate file from the subfolder
+        file_path = os.path.join(subfolder_path, routeText)
+        with open(file_path, "r") as my_file:
+            data = my_file.read()
+        coords_list = data.split("\n")
 
 
-    speed_limits = []
-    speed_limits = fileMaker(subfolder_path,routeSpeed,routeText,'speed')
+        speed_limits = []
+        speed_limits = fileMaker(subfolder_path,routeSpeed,routeText,'speed')
 
-    # Convert to m/s
-    speed_ms = [x / 2.237 for x in speed_limits]
+        # Convert to m/s
+        speed_ms = [x / 2.237 for x in speed_limits]
 
-    distances = []
-    distances = fileMaker(subfolder_path,routeDistance,routeText,'distance')
+        distances = []
+        distances = fileMaker(subfolder_path,routeDistance,routeText,'distance')
 
-    elevation_differences = []
-    elevation_differences = fileMaker(subfolder_path,routeAltitude,routeText,'altitude')
+        elevation_differences = []
+        elevation_differences = fileMaker(subfolder_path,routeAltitude,routeText,'altitude')
 
-    # VARIABLES
+        # VARIABLES
 
-    if routeBusStops[routeNumber] < 0:
-        routeBusStops[routeNumber] = 0
+        if routeBusStops[index] < 0:
+            routeBusStops[index] = 0
 
-    # Gravity (m/s^2)
-    g = 9.81
-    # Air Density (kg/m^3)
-    p = 1.225
+        # Gravity (m/s^2)
+        g = 9.81
+        # Air Density (kg/m^3)
+        p = 1.225
 
-    massPerson = 79.42
-    busPopulation = 26.3
+        massPerson = 79.42
+        busPopulation = 26.3
 
-    velocity = speed_ms
-    distance = distances
+        velocity = speed_ms
+        distance = distances
 
-    gradient = []
+        gradient = []
 
-    # Calculate gradient in radians
-    for i in range(len(distances)):
-        gradient.append(math.asin(elevation_differences[i] / distances[i]))
+        # Calculate gradient in radians
+        for i in range(len(distances)):
+            gradient.append(math.asin(elevation_differences[i] / distances[i]))
 
-    distance, gradient, velocity = modify_points(additionalStops, distance, gradient, velocity)
+        distance, gradient, velocity = modify_points(additionalStops, distance, gradient, velocity)
 
-    for count in range(2):
 
         if count == 0:
             # Bus Variables
@@ -328,7 +337,7 @@ for routeNumber in range(len(route)):
             # Coefficient of Rolling Resistance
             crr = 0.1
             # Density of Diesel
-            fuelDensity = 35800000
+            fuelDensity = 38600000
             engineEff = 0.35
             # Acceleration of a bus (m/s^2)
             acceleration = 0.75
@@ -413,15 +422,13 @@ for routeNumber in range(len(route)):
         
         time_cum, average_speed = journey_times_and_avg_speeds(distance,velocity,acceleration)
 
-        #print('average speed: ',Average(average_speed))
-
         # Find the total amount of petrol for the journey.
         fuel_litres = sum(fuel_cum)
-       # print('Litres of Fuel:')
+        # print('Litres of Fuel:')
         co2 = fuelMass * fuel_litres
 
-       # print('kg of CO2: ')
-       # print(co2)
+        # print('kg of CO2: ')
+        # print(co2)
         #print(time_cum)
         #print(distance)
         #print(speed_ms)
@@ -432,42 +439,67 @@ for routeNumber in range(len(route)):
 
         #print((routeBusStops[routeNumber] * timePerStop))
 
-        time = time + (routeBusStops[routeNumber] * timePerStop)
+        time = time + (routeBusStops[index] * timePerStop)
 
         time = round(time,2)
         #print(time)
+
+
+        # If the target time is not met, add an additional stop
+        additionalStops += 1
+        distance, gradient, velocity = modify_points(additionalStops, distance, gradient, velocity)
         
-        fuelList.append(fuel_litres)
-        co2List.append(co2)
-        timeList.append(time)
 
 
+        # Compare the calculated journey time with the target time
+        if time >= targetTime:
 
+            fuelList.append(fuel_litres)
+            co2List.append(co2)
+            timeList.append(time)
+            break            
+
+
+print(timeList)
+print(co2List)
+print(fuelList)
+
+plt.plot(timeList,co2List)
+plt.show()
+
+print('time:')
+for i in range(len(timeList)):
+    print(timeList[i])
+
+print('co2:')
+for i in range(len(timeList)):
+    print(co2List[i])
+
+print('fuel:')
+for i in range(len(timeList)):
+    print(fuelList[i])
 
 ######## PRINT OUTPUT
 
-fuelBus = fuelList[::2]
-fuelCar = fuelList[1::2]
+# fuelBus = fuelList[::2]
+# fuelCar = fuelList[1::2]
 
-co2Bus = co2List[::2]
-co2Car = co2List[1::2]
+# co2Bus = co2List[::2]
+# co2Car = co2List[1::2]
 
-timeBus = timeList[::2]
-timeCar = timeList[1::2]
+# timeBus = timeList[::2]
+# timeCar = timeList[1::2]
 
-# Print the header row
-header = f"{'':<10}|{'Bus':^32}|{'Car':^32}"
-print(header)
-header = f"{'Row Name':<10}|{'Litres':^10}|{'Kg':^10}|{'Time':^10}|{'Litres':^10}|{'Kg':^10}|{'Time':^10}"
-print(header)
-print('-' * len(header))
+# # Print the header row
+# header = f"{'':<10}|{'Bus':^32}|{'Car':^32}"
+# print(header)
+# header = f"{'Row Name':<10}|{'Litres':^10}|{'Kg':^10}|{'Time':^10}|{'Litres':^10}|{'Kg':^10}|{'Time':^10}"
+# print(header)
+# print('-' * len(header))
 
-# Print the data rows
-for i in range(len(fuelBus)):
-    row_str = f"{route[i]:<10}|{fuelBus[i]:^10.2f}|{co2Bus[i]:^10.2f}|{timeBus[i]:^10}|{fuelCar[i]:^10.2f}|{co2Car[i]:^10.2f}|{timeCar[i]:^10}"
-    print(row_str)
+# # Print the data rows
+# for i in range(len(fuelBus)):
+#     row_str = f"{route[i]:<10}|{fuelBus[i]:^10.2f}|{co2Bus[i]:^10.2f}|{timeBus[i]:^10}|{fuelCar[i]:^10.2f}|{co2Car[i]:^10.2f}|{timeCar[i]:^10}"
+#     print(row_str)
 
 
-#for i in range(len(timeBus)):
-#    print(timeBus[i])
-    
