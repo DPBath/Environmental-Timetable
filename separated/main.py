@@ -7,7 +7,6 @@ from generation import *
 from get_info import *
 from input_data import *
 from output_data import *
-from population import *
 from validity import *
 
 # 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
@@ -15,50 +14,51 @@ print('hi')
 
 faculty_names = ['Eng', 'Hum', 'Man', 'Sci']
 
-room, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'A', 2, 164)
-capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'B', 2, 164)
+# 0 = Normal    1 = Fast    2 = Instant
+speed = 0
 
-##### Normal
-# room, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'A', 2, 164)
-# capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'B', 2, 164)
+if speed == 0:
+    ##### Normal
+    room, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'A', 2, 164)
+    capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'B', 2, 164)
 
-# students_per_faculty_year = [[893,1517,714,1339],[766,1302,613,1149],[520,884,416,780],[937,1358,639,1414]]
-# num_courses_list = [[7, 11, 4, 10],[7, 11, 4, 10],[7, 11, 4, 10],[6,13,5,6]]
-# num_assigned_modules = 5
-# num_total_modules = 9
-# #num_lectures_list = [3, 2, 2, 3]
-# num_lectures_list = [4, 3, 4, 4]
-# year_percentages = [40, 34, 23, 3]
-# num_teachers_per_faculty =[85,143,68,127]
+    students_per_faculty_year = [[893,1517,714,1339],[766,1302,613,1149],[520,884,416,780],[937,1358,639,1414]]
+    num_courses_list = [[7, 11, 4, 10],[7, 11, 4, 10],[7, 11, 4, 10],[6,13,5,6]]
+    num_assigned_modules = 5
+    num_total_modules = 9
+    #num_lectures_list = [3, 2, 2, 3]
+    num_lectures_list = [4, 3, 4, 4]
+    year_percentages = [40, 34, 23, 3]
+    num_teachers_per_faculty =[85,143,68,127]
 
-##### Fast
-# room, workbook, worksheet = read_excel_column_to_list(f'Tables.xlsx', 'Rooms', 'H', 2, 30)
-# capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'I', 2, 30)
+elif speed == 1:
+    ###### Fast
+    room, workbook, worksheet = read_excel_column_to_list(f'Tables.xlsx', 'Rooms', 'H', 2, 30)
+    capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'I', 2, 30)
 
-# students_per_faculty_year = [[178,303,143,268],[153,260,123,230],[104,176,83,156],[187,271,127,283]]
-# num_courses_list = [[4, 4, 4, 4],[4, 4, 4, 4],[4, 4, 4, 4],[4, 4, 4, 4]]
-# num_lectures_list = [3, 3, 3, 3]
-# year_percentages = [40, 34, 23, 3]
-# num_assigned_modules = 3
-# num_total_modules = 5
-# num_teachers_per_faculty =[20,30,14,25]
+    students_per_faculty_year = [[178,303,143,268],[153,260,123,230],[104,176,83,156],[187,271,127,283]]
+    num_courses_list = [[4, 4, 4, 4],[4, 4, 4, 4],[4, 4, 4, 4],[4, 4, 4, 4]]
+    num_lectures_list = [3, 3, 3, 3]
+    year_percentages = [40, 34, 23, 3]
+    num_assigned_modules = 3
+    num_total_modules = 5
+    num_teachers_per_faculty =[20,30,14,25]
 
-##### Instant
-room, workbook, worksheet = read_excel_column_to_list(f'Tables.xlsx', 'Rooms', 'H', 2, 30)
-capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'I', 2, 30)
+elif speed == 2:
+    ##### Instant
+    room, workbook, worksheet = read_excel_column_to_list(f'Tables.xlsx', 'Rooms', 'H', 2, 30)
+    capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'I', 2, 30)
 
-students_per_faculty_year = [[178,303,143,268],[153,260,123,230],[104,176,83,156],[187,271,127,283]]
-num_courses_list = [[1, 1, 1, 1],[1, 1, 1, 1],[1, 1, 1, 1],[1, 1, 1, 1]]
-num_lectures_list = [1, 1, 1, 1]
-year_percentages = [40, 34, 23, 3]
-num_assigned_modules = 1
-num_total_modules = 1
-num_teachers_per_faculty =[20,30,14,25]
+    students_per_faculty_year = [[178,303,143,268],[153,260,123,230],[104,176,83,156],[187,271,127,283]]
+    num_courses_list = [[1, 1, 1, 1],[1, 1, 1, 1],[1, 1, 1, 1],[1, 1, 1, 1]]
+    num_lectures_list = [1, 1, 1, 1]
+    year_percentages = [40, 34, 23, 3]
+    num_assigned_modules = 1
+    num_total_modules = 1
+    num_teachers_per_faculty =[20,30,14,25]
 
 
 # Comment - Similar to above, like that its a dictionary, but collate this operation with the above one so you only have to loop through student in population once.
-
-
 # Look at doing lecturer profile with prefered hours etc, regular blockers
 
 # ######################### TIME SHIT
