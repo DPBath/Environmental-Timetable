@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Map Click Coordinates</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzPvM7fVj7GzozpAf6zEiHPBSJLl1Z8Ys"></script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #buttons {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1;
+      }
+      button {
+        display: block;
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="buttons">
+      <button id="saveToFile">Save to Text File</button>
+      <button id="copyToClipboard">Copy to Clipboard</button>
+    </div>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 51.3758, lng: -2.3599 }, // Bath, England
+          zoom: 12,
+        });
+
+        const coordinatesList = [];
+
+        map.addListener("click", (event) => {
+          const latLng = event.latLng;
+          const coord = {
+            lat: latLng.lat(),
+            lng: latLng.lng(),
+          };
+          coordinatesList.push(coord);
+
+          // Add a marker at the clicked location
+          new google.maps.Marker({
+            position: coord,
+            map: map,
+          });
+        });
+
+        document.getElementById("saveToFile").addEventListener("click", () => {
+          const content = coordinatesList
+            .map((coord) => `${coord.lat}, ${coord.lng}`)
+            .join("\n");
+          const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "coordinates.txt";
+          link.click();
+        });
+
+        document.getElementById("copyToClipboard").addEventListener("click", () => {
+          const content = coordinatesList
+            .map((coord) => `${coord.lat}, ${coord.lng}`)
+            .join("\n");
+          navigator.clipboard.writeText(content).then(
+            () => {
+              alert("Coordinates copied to clipboard.");
+            },
+            (err) => {
+              alert("Error copying coordinates to clipboard.");
+            }
+          );
+        });
+      }
+
+      google.maps.event.addDomListener(window, "load", initMap);
+    </script>
+  </body>
+</html>
