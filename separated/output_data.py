@@ -1,3 +1,5 @@
+import pandas as pd
+
 def print_table(faculty_year_counts):
     header = "Faculty/Year\t" + "\t".join(f"Y{i+1}" for i in range(len(faculty_year_counts[next(iter(faculty_year_counts))])))
     print(header)
