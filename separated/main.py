@@ -32,28 +32,28 @@ capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms'
 # num_teachers_per_faculty =[85,143,68,127]
 
 ##### Fast
-room, workbook, worksheet = read_excel_column_to_list(f'Tables.xlsx', 'Rooms', 'H', 2, 30)
-capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'I', 2, 30)
-
-students_per_faculty_year = [[178,303,143,268],[153,260,123,230],[104,176,83,156],[187,271,127,283]]
-num_courses_list = [[4, 4, 4, 4],[4, 4, 4, 4],[4, 4, 4, 4],[4, 4, 4, 4]]
-num_lectures_list = [3, 3, 3, 3]
-year_percentages = [40, 34, 23, 3]
-num_assigned_modules = 3
-num_total_modules = 5
-num_teachers_per_faculty =[20,30,14,25]
-
-##### Instant
 # room, workbook, worksheet = read_excel_column_to_list(f'Tables.xlsx', 'Rooms', 'H', 2, 30)
 # capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'I', 2, 30)
 
 # students_per_faculty_year = [[178,303,143,268],[153,260,123,230],[104,176,83,156],[187,271,127,283]]
-# num_courses_list = [[1, 1, 1, 1],[1, 1, 1, 1],[1, 1, 1, 1],[1, 1, 1, 1]]
-# num_lectures_list = [1, 1, 1, 1]
+# num_courses_list = [[4, 4, 4, 4],[4, 4, 4, 4],[4, 4, 4, 4],[4, 4, 4, 4]]
+# num_lectures_list = [3, 3, 3, 3]
 # year_percentages = [40, 34, 23, 3]
-# num_assigned_modules = 1
-# num_total_modules = 1
+# num_assigned_modules = 3
+# num_total_modules = 5
 # num_teachers_per_faculty =[20,30,14,25]
+
+##### Instant
+room, workbook, worksheet = read_excel_column_to_list(f'Tables.xlsx', 'Rooms', 'H', 2, 30)
+capacity, workbook, worksheet = read_excel_column_to_list('Tables.xlsx', 'Rooms', 'I', 2, 30)
+
+students_per_faculty_year = [[178,303,143,268],[153,260,123,230],[104,176,83,156],[187,271,127,283]]
+num_courses_list = [[1, 1, 1, 1],[1, 1, 1, 1],[1, 1, 1, 1],[1, 1, 1, 1]]
+num_lectures_list = [1, 1, 1, 1]
+year_percentages = [40, 34, 23, 3]
+num_assigned_modules = 1
+num_total_modules = 1
+num_teachers_per_faculty =[20,30,14,25]
 
 
 # Comment - Similar to above, like that its a dictionary, but collate this operation with the above one so you only have to loop through student in population once.
