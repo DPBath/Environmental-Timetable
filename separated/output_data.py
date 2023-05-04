@@ -6,7 +6,6 @@ def print_table(faculty_year_counts):
         row = f"{faculty}\t\t" + "\t".join(str(year_counts[f"Y{i+1}"]) for i in range(len(year_counts)))
         print(row)
 
-
 def display_students_in_lecture(population, target_lecture):
     students_in_lecture = []
 
@@ -19,7 +18,6 @@ def display_students_in_lecture(population, target_lecture):
     print(f"\nStudents in lecture {target_lecture}:")
     for student_name in students_in_lecture:
         print(student_name)
-
 
 def print_unique_modules_and_lectures(population):
     unique_modules = set()
