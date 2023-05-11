@@ -549,3 +549,393 @@ def assign_rooms_and_times_v19(population, teachers, rooms, capacity, optimal_ho
 
     return lecture_assignments
 
+
+
+
+def assign_rooms_and_times_v10(population, teachers, rooms, capacity, all_hours):
+    lecture_assignments = {}
+    
+    # Wrap the outer loop with tqdm
+    for teacher in tqdm(teachers, desc="Teachers"):
+        for module, lectures in teacher['lectures'].items():
+            for lecture in lectures:
+                assigned = False
+                
+                for time_slot in all_hours:
+                    if assigned:
+                        break
+                        
+                    for room in rooms:
+                        student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+                        
+                        if len(student_names) > capacity[room]:
+                            continue
+                        
+                        if any(assignment['room'] == room and assignment['time'] == time_slot for assignment in lecture_assignments.values()):
+                            continue
+                            
+                        if not are_students_and_teacher_available(population, teacher, student_names, time_slot, lecture_assignments):
+                            continue
+                            
+                        lecture_assignments[lecture] = {'room': room, 'time': time_slot}
+                        assigned = True
+                        break
+
+    return lecture_assignments
+
+
+def assign_rooms_and_times_v10a(population, teachers, rooms, capacity, optimal_hours, less_optimal_hours, postgrad_hours):
+    lecture_assignments = {}
+    
+    # Wrap the outer loop with tqdm
+    for teacher in tqdm(teachers, desc="Teachers"):
+        for module, lectures in teacher['lectures'].items():
+            for lecture in lectures:
+                assigned = False
+                
+                # Determine the appropriate timeslots based on the lecture year
+                year = int(lecture.split("_")[2][-1])
+                if year == 4:
+                    time_slots = postgrad_hours + optimal_hours + less_optimal_hours
+                else:
+                    time_slots = optimal_hours + less_optimal_hours
+                
+                for time_slot in time_slots:
+                    if assigned:
+                        break
+                        
+                    for room in rooms:
+                        student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+                        
+                        if len(student_names) > capacity[room]:
+                            continue
+                        
+                        if any(assignment['room'] == room and assignment['time'] == time_slot for assignment in lecture_assignments.values()):
+                            continue
+                            
+                        if not are_students_and_teacher_available(population, teacher, student_names, time_slot, lecture_assignments):
+                            continue
+                            
+                        lecture_assignments[lecture] = {'room': room, 'time': time_slot}
+                        assigned = True
+                        break
+
+    return lecture_assignments
+
+def assign_rooms_and_times_v10b(population, teachers, rooms, capacity, optimal_hours, less_optimal_hours, postgrad_hours):
+    print('Number of Timeslots:', len(postgrad_hours + optimal_hours + less_optimal_hours ))
+    lecture_assignments = {}
+    
+    # Sort rooms by capacity (smallest to largest)
+    sorted_rooms = sorted(rooms, key=lambda x: capacity[x])
+    
+    # Sort teachers' lectures by class size (largest to smallest) and year (higher years first)
+    sorted_teacher_lectures = []
+    for teacher in teachers:
+        for module, lectures in teacher['lectures'].items():
+            for lecture in lectures:
+                student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+                year = int(lecture.split("_")[2][-1])
+                sorted_teacher_lectures.append((teacher, module, lecture, len(student_names), year))
+    sorted_teacher_lectures.sort(key=lambda x: (x[4], x[3]), reverse=True)
+    
+    # Wrap the outer loop with tqdm
+    for teacher, module, lecture, _, year in tqdm(sorted_teacher_lectures, desc="Lectures"):
+        assigned = False
+
+        if year == 4:
+            time_slots = postgrad_hours + optimal_hours + less_optimal_hours
+        else:
+            time_slots = optimal_hours + less_optimal_hours
+                
+        for time_slot in time_slots:
+            if assigned:
+                break
+                        
+            for room in sorted_rooms:
+                student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+                        
+                if len(student_names) > capacity[room]:
+                    continue
+                        
+                if any(assignment['room'] == room and assignment['time'] == time_slot for assignment in lecture_assignments.values()):
+                    continue
+                            
+                if not are_students_and_teacher_available(population, teacher, student_names, time_slot, lecture_assignments):
+                    continue
+                            
+                lecture_assignments[lecture] = {'room': room, 'time': time_slot}
+                assigned = True
+                break
+
+    return lecture_assignments
+
+
+def assign_rooms_and_times_v10c(population, teachers, rooms, capacity, optimal_hours, less_optimal_hours, lesser_optimal_hours, postgrad_hours):
+    lecture_assignments = {}
+    print('Number of Timeslots:', len(postgrad_hours + optimal_hours + less_optimal_hours + lesser_optimal_hours))
+    # Sort rooms by capacity (smallest to largest)
+    sorted_rooms = sorted(rooms, key=lambda x: capacity[x])
+    
+    # Sort teachers' lectures by class size (largest to smallest) and year (higher years first)
+    sorted_teacher_lectures = []
+    for teacher in teachers:
+        for module, lectures in teacher['lectures'].items():
+            for lecture in lectures:
+                student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+                year = int(lecture.split("_")[2][-1])
+                sorted_teacher_lectures.append((teacher, module, lecture, len(student_names), year))
+    sorted_teacher_lectures.sort(key=lambda x: (x[4], x[3]), reverse=True)
+    
+    # Wrap the outer loop with tqdm
+    for teacher, module, lecture, _, year in tqdm(sorted_teacher_lectures, desc="Lectures"):
+        assigned = False
+
+        if year == 4:
+            time_slots = postgrad_hours + optimal_hours + less_optimal_hours + lesser_optimal_hours
+        else:
+            time_slots = optimal_hours + less_optimal_hours + lesser_optimal_hours
+                
+        for time_slot in time_slots:
+            if assigned:
+                break
+                        
+            for room in sorted_rooms:
+                student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+                        
+                if len(student_names) > capacity[room]:
+                    continue
+                        
+                if any(assignment['room'] == room and assignment['time'] == time_slot for assignment in lecture_assignments.values()):
+                    continue
+                            
+                if not are_students_and_teacher_available(population, teacher, student_names, time_slot, lecture_assignments):
+                    continue
+                            
+                lecture_assignments[lecture] = {'room': room, 'time': time_slot}
+                assigned = True
+                break
+
+    return lecture_assignments
+
+
+def get_adjacent_slots(time_slot):
+    days = ['MON', 'TUE', 'WED', 'THU', 'FRI']
+    times = ['08:15', '09:15', '10:15', '11:15', '12:15', '13:15', '14:15', '15:15', '16:15', '17:15', '18:15']
+    day, time = time_slot[:3], time_slot[3:]
+    
+    adjacent_slots = []
+    day_index = days.index(day)
+    time_index = times.index(time)
+    
+    if time_index > 0:
+        adjacent_slots.append(day + times[time_index - 1])
+    if time_index < len(times) - 1:
+        adjacent_slots.append(day + times[time_index + 1])
+        
+    return adjacent_slots
+
+def assign_rooms_and_times_v10d(population, teachers, rooms, capacity, optimal_hours, less_optimal_hours, postgrad_hours):
+    print('Number of Timeslots:', len(postgrad_hours + optimal_hours + less_optimal_hours ))
+    lecture_assignments = {}
+    
+    # Sort rooms by capacity (smallest to largest)
+    sorted_rooms = sorted(rooms, key=lambda x: capacity[x])
+    
+    # Sort teachers' lectures by class size (largest to smallest) and year (higher years first)
+    sorted_teacher_lectures = []
+    for teacher in teachers:
+        for module, lectures in teacher['lectures'].items():
+            for lecture in lectures:
+                student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+                year = int(lecture.split("_")[2][-1])
+                sorted_teacher_lectures.append((teacher, module, lecture, len(student_names), year))
+    sorted_teacher_lectures.sort(key=lambda x: (x[4], x[3]), reverse=True)
+    
+    # Wrap the outer loop with tqdm
+    for teacher, module, lecture, _, year in tqdm(sorted_teacher_lectures, desc="Lectures"):
+        assigned = False
+
+        if year == 4:
+            time_slots = postgrad_hours + optimal_hours + less_optimal_hours
+        else:
+            time_slots = optimal_hours + less_optimal_hours
+
+        # Prioritize adjacent time slots to minimize days on campus
+        for time_slot in time_slots:
+            adjacent_slots = [adj_slot for adj_slot in get_adjacent_slots(time_slot) if adj_slot in time_slots]
+            prioritized_slots = adjacent_slots + [time_slot]
+            
+            for slot in prioritized_slots:
+                if assigned:
+                    break
+
+                for room in sorted_rooms:
+                    student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+                    
+                    if len(student_names) > capacity[room]:
+                        continue
+                    
+                    if any(assignment['room'] == room and assignment['time'] == slot for assignment in lecture_assignments.values()):
+                        continue
+                        
+                    if not are_students_and_teacher_available(population, teacher, student_names, slot, lecture_assignments):
+                        continue
+                        
+                    lecture_assignments[lecture] = {'room': room, 'time': slot}
+                    assigned = True
+                    break
+
+    return lecture_assignments
+
+
+def assign_rooms_and_times_v10e(population, teachers, rooms, capacity, optimal_hours, less_optimal_hours, postgrad_hours):
+    print('Number of Timeslots:', len(postgrad_hours + optimal_hours + less_optimal_hours))
+    lecture_assignments = {}
+
+    # Sort rooms by capacity (smallest to largest)
+    sorted_rooms = sorted(rooms, key=lambda x: capacity[x])
+
+    # Sort teachers' lectures by class size (largest to smallest) and year (higher years first)
+    sorted_teacher_lectures = []
+    for teacher in teachers:
+        for module, lectures in teacher['lectures'].items():
+            for lecture in lectures:
+                student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+                year = int(lecture.split("_")[2][-1])
+                sorted_teacher_lectures.append((teacher, module, lecture, len(student_names), year))
+    sorted_teacher_lectures.sort(key=lambda x: (x[4], x[3]), reverse=True)
+
+    # Wrap the outer loop with tqdm
+    for teacher, module, lecture, _, year in tqdm(sorted_teacher_lectures, desc="Lectures"):
+        assigned = False
+
+        if year == 4:
+            time_slots = postgrad_hours + optimal_hours + less_optimal_hours
+        else:
+            time_slots = optimal_hours + less_optimal_hours
+
+        for time_slot in time_slots:
+            adjacent_slots = [adj_slot for adj_slot in get_adjacent_slots(time_slot) if adj_slot in time_slots]
+            
+            # Reorder the time slots to prioritize 10:15 to 16:15
+            prioritized_slots = sorted(adjacent_slots, key=lambda x: (x[3:] >= '10:15' and x[3:] <= '16:15', x))
+
+            for slot in prioritized_slots:
+                if assigned:
+                    break
+
+                for room in sorted_rooms:
+                    student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+
+                    if len(student_names) > capacity[room]:
+                        continue
+
+                    if any(assignment['room'] == room and assignment['time'] == slot for assignment in lecture_assignments.values()):
+                        continue
+
+                    if not are_students_and_teacher_available(population, teacher, student_names, slot, lecture_assignments):
+                        continue
+
+                    lecture_assignments[lecture] = {'room': room, 'time': slot}
+                    assigned = True
+                    break
+
+    return lecture_assignments
+
+def assign_rooms_and_times_v10f(population, teachers, rooms, capacity, optimal_hours, less_optimal_hours, postgrad_hours):
+    print('Number of Timeslots:', len(postgrad_hours + optimal_hours + less_optimal_hours))
+    lecture_assignments = {}
+
+    # Sort rooms by capacity (smallest to largest)
+    sorted_rooms = sorted(rooms, key=lambda x: capacity[x])
+
+    # Sort teachers' lectures by class size (largest to smallest) and year (higher years first)
+    sorted_teacher_lectures = []
+    for teacher in teachers:
+        for module, lectures in teacher['lectures'].items():
+            for lecture in lectures:
+                student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+                year = int(lecture.split("_")[2][-1])
+                sorted_teacher_lectures.append((teacher, module, lecture, len(student_names), year))
+    sorted_teacher_lectures.sort(key=lambda x: (x[4], x[3]), reverse=True)
+
+    # Wrap the outer loop with tqdm
+    for teacher, module, lecture, _, year in tqdm(sorted_teacher_lectures, desc="Lectures"):
+        assigned = False
+
+        if year == 4:
+            time_slots = postgrad_hours + optimal_hours + less_optimal_hours
+        else:
+            time_slots = optimal_hours + less_optimal_hours
+
+        for time_slot in time_slots:
+            if assigned:
+                break
+
+            for room in sorted_rooms:
+                student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+
+                if len(student_names) > capacity[room]:
+                    continue
+
+                if any(assignment['room'] == room and assignment['time'] == time_slot for assignment in lecture_assignments.values()):
+                    continue
+
+                if not are_students_and_teacher_available(population, teacher, student_names, time_slot, lecture_assignments):
+                    continue
+
+                lecture_assignments[lecture] = {'room': room, 'time': time_slot}
+                assigned = True
+                break
+
+    return lecture_assignments
+
+def assign_rooms_and_times_v10g(population, teachers, rooms, capacity, optimal_hours, less_optimal_hours, lesser_optimal_hours, postgrad_hours):
+    print('Number of Timeslots:', len(postgrad_hours + optimal_hours + less_optimal_hours + lesser_optimal_hours))
+    lecture_assignments = {}
+
+    # Sort rooms by capacity (smallest to largest)
+    sorted_rooms = sorted(rooms, key=lambda x: capacity[x])
+
+    # Sort teachers' lectures by class size (largest to smallest) and year (higher years first)
+    sorted_teacher_lectures = []
+    for teacher in teachers:
+        for module, lectures in teacher['lectures'].items():
+            for lecture in lectures:
+                student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+                year = int(lecture.split("_")[2][-1])
+                sorted_teacher_lectures.append((teacher, module, lecture, len(student_names), year))
+    sorted_teacher_lectures.sort(key=lambda x: (x[4], x[3]), reverse=True)
+
+    # Wrap the outer loop with tqdm
+    for teacher, module, lecture, _, year in tqdm(sorted_teacher_lectures, desc="Lectures"):
+        assigned = False
+
+        if year == 4:
+            time_slots = postgrad_hours + optimal_hours + less_optimal_hours + lesser_optimal_hours
+        else:
+            time_slots = optimal_hours + less_optimal_hours + lesser_optimal_hours
+
+        for time_slot in time_slots:
+            if assigned:
+                break
+
+            for room in sorted_rooms:
+                student_names = [s['name'] for s in population if module in s['lectures'] and lecture in s['lectures'][module]]
+
+                if len(student_names) > capacity[room]:
+                    continue
+
+                if any(assignment['room'] == room and assignment['time'] == time_slot for assignment in lecture_assignments.values()):
+                    continue
+
+                if not are_students_and_teacher_available(population, teacher, student_names, time_slot, lecture_assignments):
+                    continue
+
+                lecture_assignments[lecture] = {'room': room, 'time': time_slot}
+                assigned = True
+                break
+
+    return lecture_assignments
+

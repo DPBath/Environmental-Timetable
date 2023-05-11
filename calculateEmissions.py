@@ -12,7 +12,9 @@ fuelList = []
 co2List = []
 timeList = []
 
-api_key = "AIzaSyBzPvM7fVj7GzozpAf6zEiHPBSJLl1Z8Ys"
+# Add Google Maps API key below
+api_key = ""
+
 # Add extra stops to a journey using this
 additionalStops = 0
 timePerStop = 0.25

@@ -80,7 +80,7 @@ postgrad_hours = ['WED14:15', 'WED15:15', 'WED16:15', 'WED17:15', 'WED16:15']
 
 
 ####### OUTPUT
-population = generate_population(students_per_faculty_year, faculty_names, num_courses_list, year_percentages, num_assigned_modules, num_total_modules, num_lectures_list)
+population = generate_population(students_per_faculty_year, faculty_names, num_courses_list, num_assigned_modules, num_total_modules, num_lectures_list)
 
 # Finding students in the same module
 target_module = 'Man_C1_Y4_M3'

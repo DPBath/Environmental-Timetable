@@ -17,7 +17,9 @@ timeList = []
 #initialTime = [33.08, 34.15, 20.87, 40.31, 58.16, 25.63, 130.5, 0.32] # 0.25 per stop
 #initialTime = [25.58, 25.9, 20.87, 31.56, 41.91, 25.63, 130.5, 0.32] # 0 per stop
 
-api_key = "AIzaSyBzPvM7fVj7GzozpAf6zEiHPBSJLl1Z8Ys"
+# Input Google Maps API key below
+api_key = ""
+
 # Add extra stops to a journey using this
 additionalStops = 0
 timePerStop = 0.25

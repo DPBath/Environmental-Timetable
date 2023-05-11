@@ -27,9 +27,8 @@ def generate_teacher_work_hours(teacher_id, early_start_prob=0.2, late_start_pro
     
     return work_hours
 
-def generate_population(students_per_faculty_year, faculty_names, num_courses_list, year_percentages, num_assigned_modules, num_total_modules, num_lectures_list):
+def generate_population(students_per_faculty_year, faculty_names, num_courses_list, num_assigned_modules, num_total_modules, num_lectures_list):
     assert len(students_per_faculty_year[0]) == len(faculty_names) == len(num_courses_list[0]) == len(num_lectures_list), "Length of students_per_faculty_year, faculty_names, num_courses_list, and num_lectures_list must be equal"
-    assert sum(year_percentages) == 100, "Sum of year_percentages must be equal to 100"
 
     def generate_unique_id(existing_ids):
         unique_id = ''.join(random.choices(string.ascii_uppercase, k=5))
