@@ -3,6 +3,7 @@ from get_info import get_students_in_module, get_all_modules
 from generation import generate_teacher_work_hours
 from tqdm import tqdm
 from collections import defaultdict
+import random
 
 
 def check_teacher_availability(teacher, lecture_assignments, time_slot):
@@ -386,7 +387,7 @@ def assign_rooms_and_times_v17(population, teachers, rooms, capacity, optimal_ho
         rooms_by_capacity[capacity[room]].append(room)
 
     # Shuffle rooms within each capacity group and then flatten the list
-    sorted_rooms = [room for cap in sorted(rooms_by_capacity.keys()) for room in (shuffle(rooms_by_capacity[cap]) or rooms_by_capacity[cap])]
+    sorted_rooms = [room for cap in sorted(rooms_by_capacity.keys()) for room in (random.shuffle(rooms_by_capacity[cap]) or rooms_by_capacity[cap])]
     # Sort teachers' lectures by class size (largest to smallest) and year (higher years first)
     sorted_teacher_lectures = []
     for teacher in teachers:
